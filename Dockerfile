@@ -3,6 +3,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:99
 
+# Podstawowe + zależności + desktop + AnyDesk
 RUN apt update && apt install -y \
     openssh-server \
     sudo \
@@ -16,10 +17,12 @@ RUN apt update && apt install -y \
     nano \
     gnupg \
     ca-certificates \
+    lxde \
     openbox \
     lxterminal \
-    fonts-liberation \
     libgtk-3-0 \
+    libdbus-glib-1-2 \
+    libxt6 \
     libasound2t64 \
     libx11-xcb1 \
     libxcomposite1 \
@@ -27,8 +30,19 @@ RUN apt update && apt install -y \
     libxfixes3 \
     libxrandr2 \
     libgbm1 \
+    libpango-1.0-0 \
+    libcairo2 \
+    libatk1.0-0 \
+    libatk-bridge2.0-0 \
+    libcups2 \
+    libdrm2 \
+    libxshmfence1 \
     libnss3 \
     libnspr4 \
+    libxext6 \
+    libxrender1 \
+    fonts-liberation \
+    libpolkit-gobject-1-0 \
     && mkdir -p /var/run/sshd \
     && echo 'root:password' | chpasswd \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
@@ -41,7 +55,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
     && apt install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
-# AnyDesk
+# AnyDesk (taka sama wersja jak u Ciebie)
 RUN wget -O /tmp/anydesk.deb https://download.anydesk.com/linux/anydesk_6.3.2-1_amd64.deb \
     && apt install -y /tmp/anydesk.deb \
     && rm /tmp/anydesk.deb
