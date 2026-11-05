@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 ENV DEBIAN_FRONTEND=noninteractive
 ENV DISPLAY=:99
 
-# Podstawowe + zależności + desktop + AnyDesk
+# Podstawowe + zależności + desktop
 RUN apt update && apt install -y \
     openssh-server \
     sudo \
@@ -17,6 +17,7 @@ RUN apt update && apt install -y \
     nano \
     gnupg \
     ca-certificates \
+    software-properties-common \
     lxde \
     openbox \
     lxterminal \
@@ -43,6 +44,9 @@ RUN apt update && apt install -y \
     libxrender1 \
     fonts-liberation \
     libpolkit-gobject-1-0 \
+    && add-apt-repository universe \
+    && apt update \
+    && apt install -y libgtkglext1 libgtk2.0-0 \
     && mkdir -p /var/run/sshd \
     && echo 'root:password' | chpasswd \
     && sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config \
@@ -55,7 +59,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearm
     && apt install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
 
-# AnyDesk (taka sama wersja jak u Ciebie)
+# AnyDesk
 RUN wget -O /tmp/anydesk.deb https://download.anydesk.com/linux/anydesk_6.3.2-1_amd64.deb \
     && apt install -y /tmp/anydesk.deb \
     && rm /tmp/anydesk.deb
